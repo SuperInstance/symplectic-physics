@@ -1,29 +1,17 @@
 # symplectic-physics
 
-Fortran 2008 library implementing symplectic integrators for Hamiltonian mechanics. Cache-friendly, BLAS-compatible, and close to the metal.
+**Symplectic integrators for Hamiltonian mechanics — Fortran 2008, BLAS-compatible, cache-friendly, close to the metal.**
 
-## Modules
+Fortran implementation of the same integrators found in [symplectic-spin](https://github.com/SuperInstance/symplectic-spin) (Rust), optimized for high-performance physics simulations requiring LAPACK/BLAS acceleration.
 
-| Module | Description |
-|--------|-------------|
-| `symplectic` | Symplectic matrix operations — verify, compose, random generation |
-| `hamiltonian` | Hamiltonian system type for separable H = T + V |
-| `integrators` | Symplectic Euler, Störmer-Verlet, 4th-order Yoshida |
-| `conservation` | Energy drift, phase space volume, angular momentum tracking |
-| `nbody` | N-body gravitational simulation using symplectic integrators |
+## What This Gives You
 
-## Building
-
-Requires `gfortran` with Fortran 2008 support, LAPACK, and BLAS.
-
-```bash
-make        # Build library and run tests
-make lib    # Build static library only
-make test   # Build and run tests
-make clean  # Clean build artifacts
-```
-
-Output: `build/libsymplectic.a` static library.
+- **Three integrators** — Symplectic Euler (1st order), Störmer-Verlet (2nd order), Yoshida 4th order
+- **Symplectic matrix ops** — verify, compose, and generate random symplectic matrices
+- **Conservation tracking** — energy drift, phase space volume, angular momentum
+- **N-body simulation** — gravitational N-body with symplectic integration, Kepler orbit stability
+- **BLAS/LAPACK compatible** — uses standard linear algebra routines for performance
+- **Cache-friendly** — contiguous array layout, no unnecessary allocations
 
 ## Quick Start
 
@@ -49,16 +37,15 @@ allocate(q_traj(1, 1001), p_traj(1, 1001))
 call stormer_verlet(sys, q, p, 0.01d0, 1000, q_traj, p_traj)
 ```
 
-## Integrators
+## Modules
 
-### Symplectic Euler (1st order)
-Fast, simple, symplectic. Good for quick prototyping.
-
-### Störmer-Verlet (2nd order)
-Time-reversible, excellent energy conservation. The workhorse integrator.
-
-### Yoshida 4th order
-Six-stage composition method. Near-machine-precision energy conservation for smooth systems.
+| Module | Description |
+|--------|-------------|
+| `symplectic` | Symplectic matrix operations — verify, compose, random generation |
+| `hamiltonian` | Hamiltonian system type for separable H = T + V |
+| `integrators` | Symplectic Euler, Störmer-Verlet, 4th-order Yoshida |
+| `conservation` | Energy drift, phase space volume, angular momentum tracking |
+| `nbody` | N-body gravitational simulation using symplectic integrators |
 
 ## N-Body Simulation
 
@@ -78,6 +65,17 @@ p = [0.0d0, -1.0d0, 0.0d0, 1.0d0]
 call nbody_run(sys, q, p, 0.001d0, 1000, q_out, p_out)
 ```
 
+## Building
+
+Requires `gfortran` with Fortran 2008 support, LAPACK, and BLAS.
+
+```bash
+make        # Build library and run tests
+make lib    # Build static library only → build/libsymplectic.a
+make test   # Build and run tests
+make clean  # Clean build artifacts
+```
+
 ## Design Principles
 
 - **Symplectic by construction** — integrators preserve the symplectic 2-form
@@ -95,8 +93,16 @@ call nbody_run(sys, q, p, 0.001d0, 1000, q_out, p_out)
 - 3-body stability
 - Angular momentum conservation
 
+## How It Fits
+
+Part of the SuperInstance symplectic ecosystem:
+
+- **[symplectic-spin](https://github.com/SuperInstance/symplectic-spin)** — Same integrators in pure Rust (zero deps)
+- **symplectic-physics** — Fortran 2008 with BLAS/LAPACK (this repo)
+- **[spectral-mechanics](https://github.com/SuperInstance/spectral-mechanics)** — Graphs as spring-mass systems using Verlet
+
 ## License
 
 MIT
 
-Part of the [SuperInstance OpenConstruct](https://github.com/SuperInstance/OpenConstruct) ecosystem.
+Part of the [SuperInstance](https://github.com/SuperInstance) ecosystem.
