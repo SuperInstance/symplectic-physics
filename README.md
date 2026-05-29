@@ -98,3 +98,5 @@ call nbody_run(sys, q, p, 0.001d0, 1000, q_out, p_out)
 ## License
 
 MIT
+
+Part of the [SuperInstance OpenConstruct](https://github.com/SuperInstance/OpenConstruct) ecosystem.
